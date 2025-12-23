@@ -13,13 +13,14 @@ const firstPromise = new Promise((resolve, reject) => {
   const onClick = function () {
     resolve('First promise was resolved');
     clearTimeout(timerId);
+    body.removeEventListener('click', onClick);
   };
 
   body.addEventListener('click', onClick);
 
   const timerId = setTimeout(() => {
     body.removeEventListener('click', onClick);
-    reject(Error);
+    reject(Error('First promise was rejected'));
   }, 3000);
 });
 
@@ -29,20 +30,24 @@ firstPromise
     div1.classList.add('success');
     body.append(div1);
   })
-  .catch(() => {
-    div1.textContent = 'First promise was rejected';
+  .catch((message) => {
+    div1.textContent = message;
     div1.classList.add('error');
     body.append(div1);
   });
 
-const secondPromise = new Promise((resolve, reject) => {
-  body.addEventListener('contextmenu', () => {
-    resolve('Second promise was resolved');
-  });
+const secondPromise = new Promise((resolve) => {
+  const handler = (e) => {
+    e.preventDefault?.();
 
-  body.addEventListener('click', () => {
+    body.removeEventListener('click', handler);
+    body.removeEventListener('contextmenu', handler);
+
     resolve('Second promise was resolved');
-  });
+  };
+
+  body.addEventListener('click', handler);
+  body.addEventListener('contextmenu', handler);
 });
 
 secondPromise.then((message) => {
