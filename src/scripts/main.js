@@ -11,7 +11,7 @@ div3.setAttribute('data-qa', 'notification');
 
 const firstPromise = new Promise((resolve, reject) => {
   const onClick = function () {
-    resolve();
+    resolve('First promise was resolved');
     clearTimeout(timerId);
   };
 
@@ -24,8 +24,8 @@ const firstPromise = new Promise((resolve, reject) => {
 });
 
 firstPromise
-  .then(() => {
-    div1.textContent = 'First promise was resolved';
+  .then((message) => {
+    div1.textContent = message;
     div1.classList.add('success');
     body.append(div1);
   })
@@ -37,16 +37,16 @@ firstPromise
 
 const secondPromise = new Promise((resolve, reject) => {
   body.addEventListener('contextmenu', () => {
-    resolve();
+    resolve('Second promise was resolved');
   });
 
   body.addEventListener('click', () => {
-    resolve();
+    resolve('Second promise was resolved');
   });
 });
 
-secondPromise.then(() => {
-  div2.textContent = 'Second promise was resolved';
+secondPromise.then((message) => {
+  div2.textContent = message;
   div2.classList.add('success');
   body.append(div2);
 });
@@ -57,11 +57,10 @@ const thirdPromise = new Promise((resolve, reject) => {
 
   const check = () => {
     if (leftClickDone && rightClickDone) {
-      
       body.removeEventListener('click', onLeftClick);
       body.removeEventListener('contextmenu', onRightClick);
 
-      resolve();
+      resolve('Third promise was resolved');
     }
   };
 
@@ -79,8 +78,8 @@ const thirdPromise = new Promise((resolve, reject) => {
   body.addEventListener('contextmenu', onRightClick);
 });
 
-thirdPromise.then(() => {
+thirdPromise.then((message) => {
   div3.classList.add('success');
-  div3.textContent = 'Third promise was resolved';
+  div3.textContent = message;
   body.append(div3);
 });
